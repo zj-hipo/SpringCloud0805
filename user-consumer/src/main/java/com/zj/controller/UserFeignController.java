@@ -27,15 +27,10 @@ public class UserFeignController {
     @RequestMapping("/{id}")
     @ResponseBody
     public News query(@PathVariable int id){
-        //根据服务id获取实例
-        discoveryClient.getInstances("user-provider");
-        // 根据服务名称，获取服务实例
-        List<ServiceInstance> instances = discoveryClient.getInstances("user-provider");
-        // 因为只有一个UserService,因此我们直接get(0)获取
-        ServiceInstance instance = instances.get(0);
-        // 获取ip和端口信息
-        String baseUrl = "http://"+instance.getHost() + ":" + instance.getPort()+"/"+id;
-        News news=restTemplate.getForObject(baseUrl,News.class);
+        //ribbion的用法
+        //获取ip和端口信息
+        String basUrl="http://user-provider/"+id;
+        News news=restTemplate.getForObject(basUrl,News.class);
         return news;
     }
 }
